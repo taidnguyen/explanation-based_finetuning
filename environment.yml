@@ -1,0 +1,13 @@
+name: ex-ft
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip:
+    - pandas==2.0.1
+    - nltk==3.8.1
+    - scikit-learn==1.2.2
+    - pattern==3.6
+    - transformers==4.25.1
+    - torch==2.0.1
+    - sentencepiece==0.1.99

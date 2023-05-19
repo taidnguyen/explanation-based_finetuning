@@ -18,7 +18,7 @@ sh script/download_data.sh DIR_PATH
 ### 1. Prepare data for finetuning
 From the original datasets, we construct induce biased data with a spurious correlation for finetuning. The following script preprocesses the a biased e-SNLI dataset by skewing long sentences towards the Positive class. We apply a perfect 1.0 class bias and store output in `res`:
 ```
-python3 construct_data.py --task_name esnlo --bias length --bias_strength=1.0 --data_dir DIR_PATH/data --output_dir DIR_PATH/res
+python3 construct_data.py --task_name esnli --bias length --bias_strength=1.0 --data_dir DIR_PATH/data --output_dir DIR_PATH/res
 ```
 Parameters available:
 * `--task_name`: {creak,comve,esnli,sbic}

@@ -3,20 +3,20 @@
 Official implementation for our paper ["Explanation-based Finetuning Makes Models More Robust to Spurious Correlation"](https://arxiv.org/abs/2305.04990), ACL 2023.
 
 ## Getting started
-Create a new conda environment using environment.yml. The env is named "ex-ft" by default.
+We suggest using [conda](https://docs.conda.io/en/main/miniconda.html#installing) to set up your environment. To begin, we create a new environment using `environment.yml`, naming it "ex-ft" by default.
 ```
 conda env create -f environment.yml
 ```
 
 ## Download data
-The following script downloads 4 datatset to a specified directory path. This includes CREAK, e-SNLI, COMVE, SBIC, all of which have free-form text explanations.
+The following script downloads 4 datasets in our paper to a specified directory path. This includes CREAK, e-SNLI, COMVE, SBIC, all of which include free-form text explanations.
 ```
 sh script/download_data.sh DIR_PATH
 ```
 
 ## Usage
 ### 1. Prepare data for finetuning
-From the original datasets, we construct induce biased data with a spurious correlation for finetuning. The following script preprocesses the a biased e-SNLI dataset by skewing long sentences towards the Positive class. We apply a perfect 1.0 class bias and store output in `res`:
+From the original datasets, we induce a bias (a spurious correlation) into the data for finetuning. The following script processes a biased e-SNLI dataset for training by skewing long sentences towards the Positive class. We apply a perfect 1.0 class bias and store output in `res`:
 ```
 python3 construct_data.py --task_name esnli --bias length --bias_strength=1.0 --data_dir DIR_PATH/data --output_dir DIR_PATH/res
 ```
@@ -32,7 +32,7 @@ a. For calling the OpenAI API to finetune a model:
 ```
 python3 finetune_openai.py --api_key <YOUR_API_KEY> --filename esnli_present_finetuned_trainAdvanced_filterBias_100bias_1000train.csv --model davinci
 ```
-Afterwards, please store the ID of your finetuned model to `openai_model_dict.py` following the template.
+GPT-3 family includes {ada,babbage,curie,davinci}. Afterwards, please store the ID of your finetuned model to `openai_model_dict.py` following the template. They are usually named in the format `davinci:ft-account_name-members-%Y-%m-%d-%h-%m-$s`.
 
 b. For finetuning other model families such as BART, T5, or OPT:
 ```
@@ -59,7 +59,7 @@ Do inference over the Test set and report Accuracy, F1, and correlation with the
 python3 evaluate.py --task_name esnli --bias length --method finetuned --with_expl  --data_dir DIR_PATH/data --output_dir DIR_PATH/res
 ```
 
-Last 3 lines of expected output:
+What to expect in the last 3 lines of your evaluation output:
 ```
 Using specified model: davinci:ft-ccb-lab-members-2022-12-26-20-28-30
 inferencing
@@ -75,7 +75,7 @@ If you find our work helpful, please cite:
   author = {Ludan, Josh Magnus and Meng, Yixuan and Nguyen, Tai and Shah, Saurabh and Lyu, Qing and Apidianaki, Marianna and Callison-Burch, Chris},
   title = {Explanation-based Finetuning Makes Models More Robust to Spurious Cues},
   booktitle={Proceedings of the The 61st Annual Meeting of the Association for Computational Linguistics (ACL 2023)},
-  address={Toronto, Canada}
+  address={Toronto, Canada},
   year = {2023},
   copyright = {Creative Commons Attribution 4.0 International}
 }
